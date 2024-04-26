@@ -3,7 +3,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>eidas-redis-specific-communication</artifactId>
   <packaging>jar</packaging>
-  <version>DEV-SNAPSHOT</version>
   <name>eidas-redis-specific-communication</name>
   <parent>
     <groupId>no.idporten.eidas</groupId>
@@ -15,7 +14,7 @@
     <dependency>
       <groupId>no.idporten.eidas</groupId>
       <artifactId>eidas-redis</artifactId>
-    </dependency>
+   </dependency>
   </dependencies>
 
 </project>
