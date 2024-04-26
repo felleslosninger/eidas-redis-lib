@@ -56,7 +56,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public void put(K key, V value) {
         try {
-            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.opsForValue().set(keyWithPrefix(key), value);
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
             log.error("Failed to set {} object in cache: {}", key, e.getMessage());
             throw e;
@@ -184,8 +184,12 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public void clear() {
         try {
-            Set<K> keys = redisTemplate.keys((K) "*");
-            keys.forEach(this::remove);
+            // Fetch all keys that match the prefix pattern
+            Set<String> keys = redisTemplate.keys(cachePrefix + "*");
+            if (keys != null && !keys.isEmpty()) {
+                redisTemplate.delete(keys);
+            }
+
         } catch (Exception e) {
             log.error("Failed to clear cache", e);
             throw e;
