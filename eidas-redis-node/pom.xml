@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>eidas-redis-node</artifactId>
+  <packaging>jar</packaging>
+  <version>DEV-SNAPSHOT</version>
+  <name>eidas-redis-node</name>
+  <parent>
+    <groupId>no.idporten.eidas</groupId>
+    <artifactId>eidas-redis-lib</artifactId>
+    <version>DEV-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>no.idporten.eidas</groupId>
+      <artifactId>eidas-redis</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
