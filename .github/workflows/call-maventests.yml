@@ -11,7 +11,7 @@ on:
 
 jobs:
   call-workflow-maven-build:
-    uses: felleslosninger/github-workflows/.github/workflows/ci-maven-build.yml@main
+    uses: felleslosninger/eid-github-workflows/.github/workflows/maven-build-lib.yml@main
     with:
       java-version: 11
       sbom-path: ./eidas-redis/target/
