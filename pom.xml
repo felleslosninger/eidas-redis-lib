@@ -267,4 +267,12 @@
             <url>https://maven.pkg.github.com/felleslosninger/.github</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/felleslosninger/eidas-redis-lib</url>
+        </repository>
+    </distributionManagement>
 </project>

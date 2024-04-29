@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-workflow-release:
-    uses: felleslosninger/eid-github-workflows/.github/workflows/maven-release-lib.yml@main
+    uses: felleslosninger/github-workflows/.github/workflows/ci-maven-release.yml@main
     with:
       java-version: 11
     secrets:
