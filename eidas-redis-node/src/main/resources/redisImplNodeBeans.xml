@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2022 by European Commission
+  ~
+  ~ Licensed under the EUPL, Version 1.2 or - as soon they will be
+  ~ approved by the European Commission - subsequent versions of the
+  ~ EUPL (the "Licence");
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at:
+  ~ https://joinup.ec.europa.eu/page/eupl-text-11-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the Licence is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+  ~ implied.
+  ~ See the Licence for the specific language governing permissions and
+  ~ limitations under the Licence.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="redisConfig" class="no.idporten.eidas.redis.cache.RedisConfig">
+        <property name="redisPassword" value="${redis.password}"/>
+        <property name="redisHost" value = "${redis.host}"/>
+        <property name="redisPort" value = "${redis.port}"/>
+    </bean>
+    <bean id="redisMetadataConfig" class="no.idporten.eidas.redis.cache.metadata.RedisMetadataConfig">
+    </bean>
+
+
+    <bean id="springServiceCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="antiReplayCacheService"/>
+    </bean>
+
+    <bean id="springConnectorCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="antiReplayCacheConnector"/>
+    </bean>
+    <bean id="springConnectorCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="connectorRequestCorrelationCacheService"/>
+    </bean>
+    <bean id="springServiceCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="proxyServiceRequestCorrelationCacheService"/>
+    </bean>
+    <bean id="springConnectorCMapspecificLightCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="specificConnectorLtRequestCorrelationCacheService"/>
+    </bean>
+    <bean id="connectorFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="connectorFlowIdCacheService"/>
+    </bean>
+    <bean id="proxyServiceFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
+        <constructor-arg value="proxyServiceFlowIdCacheService"/>
+    </bean>
+
+    <!-- Simple cache for this just to verify the others -->
+    <bean id="metadataCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching">
+        <constructor-arg type="java.lang.String" value="metadata"/>
+        <constructor-arg ref="redisMetadataTemplate"/>
+    </bean>
+
+</beans>

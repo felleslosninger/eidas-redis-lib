@@ -1,0 +1,18 @@
+name: Release to github packages
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  call-workflow-release:
+    uses: felleslosninger/eid-github-workflows/.github/workflows/maven-release-lib.yml@main
+    with:
+      java-version: 11
+      sbom-path: ./eidas-redis/target/
+    secrets:
+      packages-user: ${{ secrets.CREATE_PACKAGES_USER }}
+      packages-token: ${{ secrets.CREATE_PACKAGES_TOKEN }}
+      maven-user: ${{ secrets.MAVEN_USER }}
+      maven-password: ${{ secrets.MAVEN_PASSWORD }}
+      
