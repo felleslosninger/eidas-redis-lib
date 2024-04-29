@@ -1,4 +1,4 @@
-package no.idporten.eidas.redis.cache;
+package no.idporten.eidas.redis.cache.proxy;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -16,27 +16,19 @@ import org.springframework.util.StringUtils;
 @Configuration
 @RequiredArgsConstructor
 @Data
-public class RedisConfig {
+public class RedisProxyConfig {
 
-    private String redisHost;
+    @Bean(name = "redisProxyTemplate")
+    public RedisTemplate<String, Object> redisProxyTemplate(RedisConnectionFactory redisConnectionFactory) {
 
-    private String redisPort;
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new JdkSerializationRedisSerializer());
 
-    private String redisPassword;
-
-    private String issuerName = "eidas-proxy";
-
-    public int getRedisPort() {
-        return Integer.parseInt(redisPort);
+        return template;
     }
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost, getRedisPort());
-        if(StringUtils.hasText(redisPassword)) {
-            lettuceConnectionFactory.setPassword(redisPassword);
-        }
-        return lettuceConnectionFactory;
-    }
+
 
 
 }

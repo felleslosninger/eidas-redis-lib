@@ -21,9 +21,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="redisConfig" class="no.idporten.eidas.redis.cache.RedisConfig">
-        <property name="redisPassword" value=""/>
-        <property name="redisHost" value = "localhost"/>
-        <property name="redisPort" value = "6400"/>
+        <property name="redisPassword" value="${redis.password}"/>
+        <property name="redisHost" value = "${redis.host}"/>
+        <property name="redisPort" value = "${redis.port}"/>
+    </bean>
+
+    <bean id="redisProxyConfig" class="no.idporten.eidas.redis.cache.proxy.RedisProxyConfig">
     </bean>
 
     <bean id="nodeSpecificProxyserviceRequestCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
@@ -40,6 +43,7 @@
 
     <bean id="nodeSpecificConnectorResponseCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${node.specific.connector.response.cache.name}"/>
+        <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 
 

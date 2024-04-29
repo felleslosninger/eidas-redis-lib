@@ -29,10 +29,10 @@ import javax.cache.Cache;
 @RunWith(org.mockito.junit.MockitoJUnitRunner.class)
 public class SimpleMetadataCachingTest {
     @Mock
-    private  RedisTemplate<String, String> redisTemplate;
+    private  RedisTemplate<String, EidasMetadataParametersI> redisTemplate;
     @Test
     public void getCache() {
-        SimpleMetadataCaching<String, EidasMetadataParametersI> simpleMetadataCaching = new SimpleMetadataCaching("metadata", redisTemplate);
+        SimpleMetadataCaching simpleMetadataCaching = new SimpleMetadataCaching("metadata", redisTemplate);
         Cache<String, EidasMetadataParametersI> cache = simpleMetadataCaching.getCache();
         Assert.assertNotNull(cache);
     }

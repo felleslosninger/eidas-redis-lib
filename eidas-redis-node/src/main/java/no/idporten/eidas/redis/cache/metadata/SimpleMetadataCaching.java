@@ -17,6 +17,7 @@
  */
 package no.idporten.eidas.redis.cache.metadata;
 
+import eu.eidas.auth.engine.metadata.EidasMetadataParametersI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -26,17 +27,17 @@ import javax.cache.Cache;
  * implements a caching service using hashmap
  */
 @Slf4j
-public final class SimpleMetadataCaching<String, EidasMetadataParametersI> extends AbstractMetadataCaching<String, EidasMetadataParametersI> {
+public final class SimpleMetadataCaching extends AbstractMetadataCaching<String, EidasMetadataParametersI> {
 
-    public SimpleMetadataCaching(String prefix, RedisTemplate redisTemplate) {
-        super((java.lang.String) prefix, redisTemplate);
+    public SimpleMetadataCaching(java.lang.String prefix, RedisTemplate<java.lang.String, EidasMetadataParametersI> redisTemplate) {
+        super(prefix, redisTemplate);
         log.info("SimpleMetadataCaching");
     }
 
 
     @Override
     protected Cache<java.lang.String, eu.eidas.auth.engine.metadata.EidasMetadataParametersI> getCache()  {
-        return (Cache<java.lang.String, eu.eidas.auth.engine.metadata.EidasMetadataParametersI>) this;
+        return  this;
     }
 
 }

@@ -1,5 +1,6 @@
-package no.idporten.eidas.redis.cache;
+package no.idporten.eidas.redis.cache.metadata;
 
+import eu.eidas.auth.engine.metadata.EidasMetadataParametersI;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,27 +17,19 @@ import org.springframework.util.StringUtils;
 @Configuration
 @RequiredArgsConstructor
 @Data
-public class RedisConfig {
+public class RedisMetadataConfig {
 
-    private String redisHost;
 
-    private String redisPort;
 
-    private String redisPassword;
+    @Bean(name = "redisMetadataTemplate")
+    public RedisTemplate<String, EidasMetadataParametersI> redisMetadataTemplate(RedisConnectionFactory redisConnectionFactory) {
 
-    private String issuerName = "eidas-proxy";
+        RedisTemplate<String, EidasMetadataParametersI> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new JdkSerializationRedisSerializer());
 
-    public int getRedisPort() {
-        return Integer.parseInt(redisPort);
+        return template;
     }
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost, getRedisPort());
-        if(StringUtils.hasText(redisPassword)) {
-            lettuceConnectionFactory.setPassword(redisPassword);
-        }
-        return lettuceConnectionFactory;
-    }
-
 
 }
