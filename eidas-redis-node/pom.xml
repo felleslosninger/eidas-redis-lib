@@ -16,6 +16,18 @@
       <groupId>no.idporten.eidas</groupId>
       <artifactId>eidas-redis</artifactId>
     </dependency>
+    <dependency>
+      <groupId>eu.eidas</groupId>
+      <artifactId>eidas-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>eu.eidas</groupId>
+      <artifactId>eidas-saml-metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>eu.eidas</groupId>
+      <artifactId>eidas-saml-engine</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

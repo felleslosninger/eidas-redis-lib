@@ -65,7 +65,6 @@
                 <version>${jsr305.version}</version>
                 <scope>provided</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
@@ -94,12 +93,22 @@
                 <artifactId>eidas-commons</artifactId>
                 <version>${eidas.version}</version>
             </dependency>
-          <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.version}</version>
-            <scope>provided</scope>
-          </dependency>
+            <dependency>
+                <groupId>eu.eidas</groupId>
+                <artifactId>eidas-saml-metadata</artifactId>
+                <version>${eidas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.eidas</groupId>
+                <artifactId>eidas-saml-engine</artifactId>
+                <version>${eidas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -111,7 +120,13 @@
                 <artifactId>cache-api</artifactId>
                 <version>${javax.cache.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.idporten.eidas</groupId>
+                <artifactId>eidas-redis</artifactId>
+                <version>DEV-SNAPSHOT</version>
+            </dependency>
         </dependencies>
+
     </dependencyManagement>
     <dependencies>
         <!-- Dependencies in common for all modules -->

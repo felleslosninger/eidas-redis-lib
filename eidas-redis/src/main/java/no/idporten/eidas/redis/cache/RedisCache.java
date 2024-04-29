@@ -1,11 +1,11 @@
 package no.idporten.eidas.redis.cache;
 
 import eu.eidas.auth.commons.cache.ConcurrentCacheService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.QueryTimeoutException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.StringUtils;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -18,11 +18,16 @@ import javax.cache.processor.EntryProcessorResult;
 import java.util.*;
 
 @Slf4j
-@RequiredArgsConstructor
+
 public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
-    protected String cachePrefix;
+    protected final String cachePrefix;
 
     private final RedisTemplate<String, V> redisTemplate;
+
+    public RedisCache(String cachePrefix, RedisTemplate<String, V> redisTemplate) {
+        this.cachePrefix = cachePrefix;
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public V get(K key) {
@@ -266,11 +271,4 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     }
 
 
-    public String getCachePrefix() {
-        return cachePrefix;
-    }
-
-    public void setCachePrefix(String cachePrefix) {
-        this.cachePrefix = cachePrefix;
-    }
 }

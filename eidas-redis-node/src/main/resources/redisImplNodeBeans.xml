@@ -22,39 +22,37 @@
 
     <bean id="redisConfig" class="no.idporten.eidas.redis.cache.RedisConfig">
         <property name="redisPassword" value=""/>
-        <property name="redisHost" value = "localhost"/>
-        <property name="redisPort" value = "6400"/>
+        <property name="redisHost" value="localhost"/>
+        <property name="redisPort" value="6400"/>
     </bean>
 
 
     <bean id="springServiceCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="antiReplayCacheService"/>
+        <constructor-arg value="antiReplayCacheService"/>
     </bean>
 
     <bean id="springConnectorCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="antiReplayCacheConnector"/>
+        <constructor-arg value="antiReplayCacheConnector"/>
     </bean>
     <bean id="springConnectorCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="connectorRequestCorrelationCacheService"/>
+        <constructor-arg value="connectorRequestCorrelationCacheService"/>
     </bean>
     <bean id="springServiceCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="proxyServiceRequestCorrelationCacheService"/>
+        <constructor-arg value="proxyServiceRequestCorrelationCacheService"/>
     </bean>
     <bean id="springConnectorCMapspecificLightCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="specificConnectorLtRequestCorrelationCacheService"/>
+        <constructor-arg value="specificConnectorLtRequestCorrelationCacheService"/>
     </bean>
     <bean id="connectorFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="connectorFlowIdCacheService"/>
+        <constructor-arg value="connectorFlowIdCacheService"/>
     </bean>
     <bean id="proxyServiceFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <property name="cachePrefix" value="proxyServiceFlowIdCacheService"/>
+        <constructor-arg value="proxyServiceFlowIdCacheService"/>
     </bean>
 
-
-    <!--production -->
-    <bean id="metadataCacheImpl" class="eu.eidas.auth.cache.metadata.DistributedMetadataCaching" lazy-init="true">
-        <property name="igniteInstanceInitializer" ref="eidasIgniteInstanceInitializerNode"/>
-        <property name="cacheName" value="eidasmetadata"/>
+    <!-- Simple cache for this just to verify the others -->
+    <bean id="metadataCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching" lazy-init="true">
+        <constructor-arg value="metadata"/>
     </bean>
 
 </beans>
