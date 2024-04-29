@@ -9,6 +9,7 @@ jobs:
     uses: felleslosninger/github-workflows/.github/workflows/ci-maven-release.yml@main
     with:
       java-version: 11
+      sbom-path: ./eidas-redis/target/
     secrets:
       packages-user: ${{ secrets.CREATE_PACKAGES_USER }}
       packages-token: ${{ secrets.CREATE_PACKAGES_TOKEN }}
