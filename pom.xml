@@ -34,6 +34,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>no.idporten.eidas</groupId>
+                <artifactId>eidas-redis</artifactId>
+                <version>DEV-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
                 <version>${commons.collections}</version>
