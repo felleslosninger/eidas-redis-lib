@@ -59,14 +59,15 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${maven-assembly.version}</version>
                 <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>src/main/assembly/assembly.xml</descriptor>
-                    </descriptors>
+
                 </configuration>
                 <executions>
                     <execution>
-                        <id>assemble-redis-lib</id>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
