@@ -14,6 +14,8 @@
 
     <properties>
         <spring-data-redis.version>1.8.23.RELEASE</spring-data-redis.version>
+        <lettuce.version>4.4.6.Final</lettuce.version>
+        <maven-assembly.version>3.7.1</maven-assembly.version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,6 +41,11 @@
             <version>${spring-data-redis.version}</version>
         </dependency>
         <dependency>
+            <groupId>biz.paluch.redis</groupId>
+            <artifactId>lettuce</artifactId>
+            <version>${lettuce.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
@@ -47,6 +54,26 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly.version}</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble-redis-lib</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
