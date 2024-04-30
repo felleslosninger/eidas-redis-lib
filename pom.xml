@@ -125,13 +125,7 @@
                 <artifactId>cache-api</artifactId>
                 <version>${javax.cache.version}</version>
             </dependency>
-            <dependency>
-                <groupId>no.idporten.eidas</groupId>
-                <artifactId>eidas-redis</artifactId>
-                <version>DEV-SNAPSHOT</version>
-            </dependency>
         </dependencies>
-
     </dependencyManagement>
     <dependencies>
         <!-- Dependencies in common for all modules -->
