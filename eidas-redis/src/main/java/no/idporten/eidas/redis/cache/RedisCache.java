@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.QueryTimeoutException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.StringUtils;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -36,7 +35,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
 
     private V getValue(String key) {
         try {
-            return redisTemplate.opsForValue().get(keyWithPrefix(key));
+            return redisTemplate.opsForValue().get(keyWithPrefixValue(key));
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
             log.error("Failed to get {} object from cache: {}", key, e.getMessage());
             throw e;
@@ -263,10 +262,10 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     }
 
     private String keyWithPrefix(K key) {
-        return keyWithPrefix(key);
+        return keyWithPrefixValue((String)key);
     }
 
-    private String keyWithPrefix(String key) {
+    private String keyWithPrefixValue(String key) {
         return String.format("%s:%s", cachePrefix, key);
     }
 
