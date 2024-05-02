@@ -31,7 +31,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
 
     @Override
     public V get(K key) {
-        return get(key);
+        return get((String)key);
     }
 
     private V get(String key) {
