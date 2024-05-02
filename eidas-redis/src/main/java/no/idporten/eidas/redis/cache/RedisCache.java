@@ -31,10 +31,10 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
 
     @Override
     public V get(K key) {
-        return get((String)key);
+        return getValue((String)key);
     }
 
-    private V get(String key) {
+    private V getValue(String key) {
         try {
             return redisTemplate.opsForValue().get(keyWithPrefix(key));
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
