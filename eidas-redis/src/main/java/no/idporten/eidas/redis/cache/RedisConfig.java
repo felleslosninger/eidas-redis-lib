@@ -36,6 +36,9 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         if(StringUtils.isEmpty(sentinelNodes)) {
+            if(StringUtils.isEmpty(redisPort)|| StringUtils.isEmpty(redisHost)) {
+                throw new IllegalArgumentException("Missing sentinel configuration");
+            }
             LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost, getRedisPort());
             if (StringUtils.hasText(redisPassword)) {
                 lettuceConnectionFactory.setPassword(redisPassword);
@@ -47,7 +50,7 @@ public class RedisConfig {
     }
 
     private LettuceConnectionFactory createSentinelConnectionFactory() {
-        if(sentinelMaster==null || sentinelNodes==null) {
+        if(StringUtils.isEmpty(sentinelMaster) || StringUtils.isEmpty(sentinelNodes) || StringUtils.isEmpty(redisPassword)){
             throw new IllegalArgumentException("Missing sentinel configuration");
         }
         List<String> nodes = Arrays.asList(sentinelNodes.split(","));
