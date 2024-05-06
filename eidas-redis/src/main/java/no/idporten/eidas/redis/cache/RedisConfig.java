@@ -47,6 +47,9 @@ public class RedisConfig {
     }
 
     private LettuceConnectionFactory createSentinelConnectionFactory() {
+        if(sentinelMaster==null) {
+            throw new IllegalArgumentException("Missing sentinel configuration");
+        }
         List<String> nodes = Arrays.asList(sentinelNodes.split(","));
         RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
                 .master(sentinelMaster);
