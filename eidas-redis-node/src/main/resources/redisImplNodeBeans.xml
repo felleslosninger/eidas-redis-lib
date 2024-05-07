@@ -24,6 +24,8 @@
         <property name="redisPassword" value="${redis.password}"/>
         <property name="redisHost" value = "${redis.host}"/>
         <property name="redisPort" value = "${redis.port}"/>
+        <property name="sentinelNodes" value = "${redis.sentinelNodes}"/>
+        <property name="sentinelMaster" value = "${redis.sentinelMaster}"/>
     </bean>
     <bean id="redisMetadataConfig" class="no.idporten.eidas.redis.cache.metadata.RedisMetadataConfig">
     </bean>
