@@ -24,7 +24,7 @@
         <guava.version>28.1-jre</guava.version>
         <jsr305.version>3.0.1</jsr305.version>
         <lombok.version>1.18.32</lombok.version>
-        <mockito.version>3.7.0</mockito.version>
+        <mockito.version>5.11.0</mockito.version>
         <javax.cache.version>1.1.0</javax.cache.version>
         <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
         <compile.plugin.version>3.8.0</compile.plugin.version>
