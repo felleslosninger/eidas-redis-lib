@@ -29,7 +29,7 @@
         <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
         <compile.plugin.version>3.8.0</compile.plugin.version>
         <surefire.plugin.version>2.19.1</surefire.plugin.version>
-        <source.plugin.version>2.1.2</source.plugin.version>
+        <source.plugin.version>3.3.1</source.plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
