@@ -60,8 +60,11 @@ public class RedisConfig {
         RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
                 .master(sentinelMaster);
 
-        for (int i = 1; i < nodes.size(); i++) {
-            String[] parts = nodes.get(i).split(":");
+        for (String node : nodes) {
+            String[] parts = node.split(":");
+            if(parts.length != 2) {
+                throw new IllegalArgumentException(String.format("Invalid sentinel node configuration %s", node));
+            }
             sentinelConfig.sentinel(parts[0], Integer.parseInt(parts[1]));
         }
 
