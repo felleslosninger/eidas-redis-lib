@@ -18,7 +18,7 @@
         <servlet.version>3.0.1</servlet.version>
         <hamcrest.version>1.3</hamcrest.version>
         <commons.collections>3.2.2</commons.collections>
-        <commons.io>2.4</commons.io>
+        <commons.io>2.14.0</commons.io>
         <commons.lang>2.6</commons.lang>
         <commons.logging>1.1.3</commons.logging>
         <guava.version>28.1-jre</guava.version>
