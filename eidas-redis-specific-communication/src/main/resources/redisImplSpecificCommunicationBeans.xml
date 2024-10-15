@@ -33,21 +33,25 @@
 
     <bean id="nodeSpecificProxyserviceRequestCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${node.specific.proxyservice.request.cache.name}"/>
+        <constructor-arg type="long" value="${node.specific.proxyservice.request.cache.ttl}"/>
         <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 
     <bean id="specificNodeConnectorRequestCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${specific.node.connector.request.cache.name}"/>
+        <constructor-arg type="long" value="${specific.node.connector.request.cache.ttl}"/>
         <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 
     <bean id="specificNodeProxyserviceResponseCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${specific.node.proxyservice.response.cache.name}"/>
+        <constructor-arg type="long" value="${specific.node.proxyservice.response.cache.ttl}"/>
         <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 
     <bean id="nodeSpecificConnectorResponseCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${node.specific.connector.response.cache.name}"/>
+        <constructor-arg type="long" value="3600"/>
         <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 

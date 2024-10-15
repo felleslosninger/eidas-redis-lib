@@ -15,22 +15,23 @@ import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorException;
 import javax.cache.processor.EntryProcessorResult;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
-
 public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     protected final String cachePrefix;
-
+    protected final Long timeToLiveInSeconds;
     private final RedisTemplate<String, V> redisTemplate;
 
-    public RedisCache(String cachePrefix, RedisTemplate<String, V> redisTemplate) {
+    public RedisCache(String cachePrefix, long timeToLiveInSeconds, RedisTemplate<String, V> redisTemplate) {
         this.cachePrefix = cachePrefix;
+        this.timeToLiveInSeconds = timeToLiveInSeconds > 0 ? timeToLiveInSeconds : -1;
         this.redisTemplate = redisTemplate;
     }
 
     @Override
     public V get(K key) {
-        return getValue((String)key);
+        return getValue((String) key);
     }
 
     private V getValue(String key) {
@@ -60,7 +61,11 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public void put(K key, V value) {
         try {
-            redisTemplate.opsForValue().set(keyWithPrefix(key), value);
+            if(timeToLiveInSeconds>0) {
+                redisTemplate.opsForValue().set(keyWithPrefix(key), value, timeToLiveInSeconds, TimeUnit.SECONDS);
+            }else{
+                redisTemplate.opsForValue().set(keyWithPrefix(key), value);
+            }
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
             log.error("Failed to set {} object in cache: {}", key, e.getMessage());
             throw e;
@@ -262,7 +267,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     }
 
     private String keyWithPrefix(K key) {
-        return keyWithPrefixValue((String)key);
+        return keyWithPrefixValue((String) key);
     }
 
     private String keyWithPrefixValue(String key) {
