@@ -37,26 +37,33 @@
 
     <bean id="springConnectorCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="antiReplayCacheConnector"/>
+        <constructor-arg value="3600"/>
     </bean>
     <bean id="springConnectorCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="connectorRequestCorrelationCacheService"/>
+        <constructor-arg value="3600"/>
     </bean>
     <bean id="springServiceCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="proxyServiceRequestCorrelationCacheService"/>
+        <constructor-arg value="3600"/>
     </bean>
     <bean id="springConnectorCMapspecificLightCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="specificConnectorLtRequestCorrelationCacheService"/>
+        <constructor-arg value="3600"/>
     </bean>
     <bean id="connectorFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="connectorFlowIdCacheService"/>
+        <constructor-arg value="3600"/>
     </bean>
     <bean id="proxyServiceFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="proxyServiceFlowIdCacheService"/>
+        <constructor-arg value="3600"/>
     </bean>
 
     <!-- Simple cache for this just to verify the others -->
     <bean id="metadataCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching">
         <constructor-arg type="java.lang.String" value="metadata"/>
+        <constructor-arg type="long" value="-1"/>
         <constructor-arg ref="redisMetadataTemplate"/>
     </bean>
 

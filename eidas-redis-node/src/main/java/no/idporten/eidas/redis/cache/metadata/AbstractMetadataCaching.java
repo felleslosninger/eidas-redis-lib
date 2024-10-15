@@ -30,8 +30,8 @@ import javax.cache.Cache;
  */
 public abstract class AbstractMetadataCaching<K,V> extends RedisCache<K,V> implements IMetadataCachingService, IClearableCachingService {
 
-    protected AbstractMetadataCaching(String prefix, RedisTemplate<String, V> redisTemplate) {
-        super(prefix, redisTemplate);
+    protected AbstractMetadataCaching(String prefix, long timeToLiveInSeconds, RedisTemplate<String, V> redisTemplate) {
+        super(prefix, timeToLiveInSeconds, redisTemplate);
     }
 
     /**
