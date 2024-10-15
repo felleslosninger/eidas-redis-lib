@@ -29,8 +29,8 @@ import javax.cache.Cache;
 @Slf4j
 public final class SimpleMetadataCaching extends AbstractMetadataCaching<String, EidasMetadataParametersI> {
 
-    public SimpleMetadataCaching(java.lang.String prefix, RedisTemplate<java.lang.String, EidasMetadataParametersI> redisTemplate) {
-        super(prefix, redisTemplate);
+    public SimpleMetadataCaching(java.lang.String prefix, long timeToLiveInSeconds, RedisTemplate<java.lang.String, EidasMetadataParametersI> redisTemplate) {
+        super(prefix, timeToLiveInSeconds, redisTemplate);
         log.info("SimpleMetadataCaching");
     }
 

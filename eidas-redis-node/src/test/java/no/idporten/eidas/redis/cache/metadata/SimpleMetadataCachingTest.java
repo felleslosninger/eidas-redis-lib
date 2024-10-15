@@ -32,7 +32,7 @@ public class SimpleMetadataCachingTest {
     private  RedisTemplate<String, EidasMetadataParametersI> redisTemplate;
     @Test
     public void getCache() {
-        SimpleMetadataCaching simpleMetadataCaching = new SimpleMetadataCaching("metadata", redisTemplate);
+        SimpleMetadataCaching simpleMetadataCaching = new SimpleMetadataCaching("metadata", -1,redisTemplate);
         Cache<String, EidasMetadataParametersI> cache = simpleMetadataCaching.getCache();
         Assert.assertNotNull(cache);
     }
