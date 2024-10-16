@@ -27,6 +27,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
         this.cachePrefix = cachePrefix;
         this.timeToLiveInSeconds = timeToLiveInSeconds > 0 ? timeToLiveInSeconds : -1;
         this.redisTemplate = redisTemplate;
+        log.info("RedisCache instansiated with prefix: {} and timeToLiveInSeconds: {} and redistemplate set={}", cachePrefix, timeToLiveInSeconds, redisTemplate!=null);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
             if(timeToLiveInSeconds>0) {
                 redisTemplate.opsForValue().set(keyWithPrefix(key), value, timeToLiveInSeconds, TimeUnit.SECONDS);
             }else{
+                log.info("Setting key {} with no timelimit", key );
                 redisTemplate.opsForValue().set(keyWithPrefix(key), value);
             }
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
