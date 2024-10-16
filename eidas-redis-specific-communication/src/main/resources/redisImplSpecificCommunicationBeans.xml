@@ -51,7 +51,7 @@
 
     <bean id="nodeSpecificConnectorResponseCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
         <constructor-arg value="${node.specific.connector.response.cache.name}"/>
-        <constructor-arg type="long" value="3600"/>
+        <constructor-arg type="long" value="1800"/>
         <constructor-arg ref="redisProxyTemplate"/>
     </bean>
 
