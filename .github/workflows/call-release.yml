@@ -5,14 +5,11 @@ on:
     types: [ created ]
 
 jobs:
-  call-workflow-release:
-    uses: felleslosninger/eid-github-workflows/.github/workflows/maven-release-lib.yml@main
+  call-workflow-maven-deploy:
+    uses: felleslosninger/github-workflows/.github/workflows/ci-maven-deploy.yml@main
     with:
       java-version: 11
       sbom-path: ./eidas-redis/target/
-    secrets:
-      packages-user: ${{ secrets.CREATE_PACKAGES_USER }}
-      packages-token: ${{ secrets.CREATE_PACKAGES_TOKEN }}
-      maven-user: ${{ secrets.MAVEN_USER }}
-      maven-password: ${{ secrets.MAVEN_PASSWORD }}
-      
+      package-version: ${{ github.event.release.tag_name }}
+      deployment-repository: ${{ github.repository }}
+    secrets: inherit
