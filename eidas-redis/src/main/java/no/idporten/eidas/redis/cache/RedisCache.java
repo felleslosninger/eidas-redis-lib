@@ -104,7 +104,12 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public boolean putIfAbsent(K key, V value) {
         try {
-            return redisTemplate.opsForValue().setIfAbsent(keyWithPrefix(key), value);
+            if(this.get(key)==null) {
+                this.put(key, value);
+                return true;
+            }
+            return false;
+
         } catch (Exception e) {
             log.error("Failed to set {} if absent in cache: {}", key, e.getMessage());
             throw e;
