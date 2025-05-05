@@ -4,7 +4,7 @@ Deling av data mellom EU software eidas-node (connector/proxy) og ID-porten eida
 
 ## Opplasting av eu-artifacts til Packages
 
-Last ned EU-software frå https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon) frå Download (zip).
+Last ned EU-software frå https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon) frå knappen "Download" (zip).
 
 Pakk ut og finn fram desse artifactane for opplasting til eidas-redis-lib packages:
 * eidas-parent-2.9.0.pom
@@ -14,17 +14,19 @@ Pakk ut og finn fram desse artifactane for opplasting til eidas-redis-lib packag
 * eidas-saml-engine-2.9.0.jar
 * eidas-saml-metadata-2.9.0.jar
 
-NB: Hent for korrekt versjon, døma over er for versjon 2.9.0.
+NB: Hent for korrekt versjon, døma over er for versjon `2.9.0`.
 
-Lag deg eit token på github på din brukar under setting for å ha lov til å create packages.
-Legg midlertidig dette tokenet inn i di Maven settings.xml fil: ~/m2/settings.xml under <repository><id>github</id>...
+Lag deg eit token på github på din brukar under setting for å ha lov til å create packages: https://github.com/settings/tokens med scopes: `repo, write:packages`.
+Legg midlertidig dette tokenet inn i di Maven settings.xml fil: `~/m2/settings.xml` under `<servers><server>github</id><password> DITT-PACKAGE_WRITE_TOKEN </password>...`.
 
 Køyr kommando under for kvar artifact i lista over, stå på rot av gjeldande repository:
-´´´
+```
 mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=<artifact>
-´´´
+```
 F.eks. slik:
-´´´
+```
 mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eu-packages/eidas-saml-metadata-2.9.0.jar
-´´´
+```
 Det er lagt inn <distributionManagement> i pom.xml i gjeldande repo for å få laste opp til korrekt URL.
+
+Verifiser at packages med korrekt versjon blir lasta opp hit: https://github.com/orgs/felleslosninger/packages?repo_name=eidas-redis-lib
