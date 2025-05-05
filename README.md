@@ -1,6 +1,7 @@
 # eidas-redis-lib
 
 Sharing of data between EU software eidas-node (connector/proxy) and ID-porten eidas-connector/proxy via storage in Redis.
+This library exists to keep "down to date" with the EU software, so no dependabot is activated.
 
 ## Manual upgrade of dependencies
 Dependencies must be upgraded manually since they have to match with version used in EU eIDAS-node, and thus must be upgraded carefully.
@@ -49,5 +50,4 @@ You do not need to add distributionManagement to the command since this is alrea
 
 Verify that the packages with correct version are uploaded: https://github.com/orgs/felleslosninger/packages?repo_name=eidas-redis-lib
 
-This library exists to keep "down to date" with the EU software
 
