@@ -1,16 +1,16 @@
 # eidas-redis-lib
 
-Deling av data mellom EU software eidas-node (connector/proxy) og ID-porten eidas-connector/proxy gjennom lagring i Redis.
+Sharing of data between EU software eidas-node (connector/proxy) and ID-porten eidas-connector/proxy via storage in Redis.
 
-## Manuelt oppgradering av dependencies
-Dependencies må oppgraderast manuelt sidan dei må match med det som er brukt i EU eIDAS-node og dermed må gjerast kontrollert i samband med oppgradering av denne.
-Det er også nytta 3. part bibliotek som ikkje er i bruk i EU eIDAS-node, desse kan oppgraderast fritt.
+## Manual upgrade of dependencies
+Dependencies must be upgraded manually since they have to match with version used in EU eIDAS-node, and thus must be upgraded carefully.
+eidas-redis-lib also uses other 3.party dependencies that is not in use in EU eIDAS-node, these can be upgraded freely.
 
-## Opplasting av eu-artifacts til Packages
+## Upload of EU-artifacts to Packages
 
-Last ned EU-software frå https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon) frå knappen "Download" (zip).
+Download EU-software from https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon), use button "Download" (zip).
 
-Pakk ut og finn fram desse artifactane for opplasting til eidas-redis-lib packages:
+Unpack and find these artifacts for upload to eidas-redis-lib packages:
 * eidas-parent-2.9.0.pom
 * eidas-commons-2.9.0.jar
 * eidas-encryption-2.9.0.jar
