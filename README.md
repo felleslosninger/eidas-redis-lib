@@ -6,6 +6,16 @@ Sharing of data between EU software eidas-node (connector/proxy) and ID-porten e
 Dependencies must be upgraded manually since they have to match with version used in EU eIDAS-node, and thus must be upgraded carefully.
 eidas-redis-lib also uses other 3.party dependencies that is not in use in EU eIDAS-node, these can be upgraded freely.
 
+## How to upgrade
+
+1. Get the latest EU software from [here](https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+Integration+Package)
+2. Unzip the package
+3. Compare the versions of libs and java used in the eu software and upgrade the pom-file in this project accordingly
+4. Run the command mvn install in eidas parent directory
+5. install eidas libs locally  ``` mvn install:install-file -Dfile=eidas-commons-2.9.0.jar -DgroupId=eu.eidas -DartifactID=eidas-commons -Dversion=2.9.0 -Dpackaging=jar```
+6. check locally with DEV-SNAPSHOT if it works (see e.g. eidas-idporten-connector for how to run locally
+7. And in github packages when ok and make a new release. See next section
+
 ## Upload of EU-artifacts to Packages
 
 Download EU-software from https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon), use button "Download" (zip).
@@ -38,3 +48,6 @@ mvn deploy:deploy-file -DpomFile=eu-packages/eidas-parent-2.9.0.pom -Drepository
 You do not need to add distributionManagement to the command since this is already added to pom.xml in this repo.
 
 Verify that the packages with correct version are uploaded: https://github.com/orgs/felleslosninger/packages?repo_name=eidas-redis-lib
+
+This library exists to keep "down to date" with the EU software
+

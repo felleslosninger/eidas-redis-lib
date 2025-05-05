@@ -13,6 +13,6 @@ jobs:
   call-workflow-maven-build:
     uses: felleslosninger/github-workflows/.github/workflows/ci-maven-build-lib.yml@main
     with:
-      java-version: 11
+      java-version: 17
       sbom-path: ./eidas-redis/target/
     secrets: inherit
