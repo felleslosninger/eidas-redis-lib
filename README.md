@@ -18,23 +18,23 @@ Unpack and find these artifacts for upload to eidas-redis-lib packages:
 * eidas-saml-engine-2.9.0.jar
 * eidas-saml-metadata-2.9.0.jar
 
-NB: Hent for korrekt versjon, døma over er for versjon `2.9.0`.
+NB: Fetch the correct version, example above is for version `2.9.0`.
 
-Lag deg eit token på github på din brukar under setting for å ha lov til å create packages: https://github.com/settings/tokens med scopes: `repo, write:packages`.
-Legg midlertidig dette tokenet inn i di Maven settings.xml fil: `~/m2/settings.xml` under `<servers><server>github</id><password> DITT-PACKAGE_WRITE_TOKEN </password>...`.
+Create a token on Github for your user under setting with the correct accesses to create packages: https://github.com/settings/tokens with scopes: `repo, write:packages`.
+Temporary add this token to your Maven settings.xml file: `~/m2/settings.xml` under `<servers><server>github</id><password> YOUR-PACKAGE_WRITE_TOKEN </password>...`.
 
-Køyr kommando under for kvar av JAR artifact i lista over, stå på rot av gjeldande repository:
+Run command below for each of the JAR artifacts in the list above (stand in the root of the current repository):
 ```
 mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=<artifact>
 ```
-F.eks. slik:
+E.g. like this:
 ```
 mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eu-packages/eidas-saml-metadata-2.9.0.jar
 ```
-For parent pom.xml må ein truleg også ha med ekstra parameter for pomFile:
+For parent pom.xml you must propably also add an extra parameter for pomFile:
 ```
 mvn deploy:deploy-file -DpomFile=eu-packages/eidas-parent-2.9.0.pom -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eu-packages/eidas-parent-2.9.0.pom
 ```
-Det er lagt inn <distributionManagement> i pom.xml i gjeldande repo for å få laste opp til korrekt URL.
+You do not need to add distributionManagement to the command since this is already added to pom.xml in this repo.
 
-Verifiser at packages med korrekt versjon blir lasta opp hit: https://github.com/orgs/felleslosninger/packages?repo_name=eidas-redis-lib
+Verify that the packages with correct version are uploaded: https://github.com/orgs/felleslosninger/packages?repo_name=eidas-redis-lib
