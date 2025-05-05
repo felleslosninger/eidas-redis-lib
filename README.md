@@ -2,6 +2,10 @@
 
 Deling av data mellom EU software eidas-node (connector/proxy) og ID-porten eidas-connector/proxy gjennom lagring i Redis.
 
+## Manuelt oppgradering av dependencies
+Dependencies må oppgraderast manuelt sidan dei må match med det som er brukt i EU eIDAS-node og dermed må gjerast kontrollert i samband med oppgradering av denne.
+Det er også nytta 3. part bibliotek som ikkje er i bruk i EU eIDAS-node, desse kan oppgraderast fritt.
+
 ## Opplasting av eu-artifacts til Packages
 
 Last ned EU-software frå https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon) frå knappen "Download" (zip).
