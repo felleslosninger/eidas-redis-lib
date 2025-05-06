@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <spring-data-redis.version>1.8.23.RELEASE</spring-data-redis.version>
-        <lettuce.version>4.4.6.Final</lettuce.version>
+        <spring-data-redis.version>2.7.18</spring-data-redis.version>
+        <lettuce.version>6.6.0.RELEASE</lettuce.version>
         <maven-assembly.version>3.7.1</maven-assembly.version>
     </properties>
     <dependencies>
@@ -41,8 +41,8 @@
             <version>${spring-data-redis.version}</version>
         </dependency>
         <dependency>
-            <groupId>biz.paluch.redis</groupId>
-            <artifactId>lettuce</artifactId>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
             <version>${lettuce.version}</version>
         </dependency>
         <dependency>
