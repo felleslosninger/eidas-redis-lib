@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <spring-data-redis.version>2.6.5</spring-data-redis.version>
-        <lettuce.version>6.1.10.RELEASE</lettuce.version>
+        <spring-data-redis.version>2.7.18</spring-data-redis.version>
+        <lettuce.version>6.6.0.RELEASE</lettuce.version>
         <maven-assembly.version>3.7.1</maven-assembly.version>
     </properties>
     <dependencies>
