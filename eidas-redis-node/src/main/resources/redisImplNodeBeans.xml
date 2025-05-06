@@ -67,4 +67,10 @@
         <constructor-arg ref="redisMetadataTemplate"/>
     </bean>
 
+    <bean id="metadataRolloverCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching" lazy-init="true">
+        <constructor-arg type="java.lang.String" value="metadata"/>
+        <constructor-arg type="long" value="-1"/>
+        <constructor-arg ref="redisMetadataTemplate"/>
+    </bean>
+
 </beans>
