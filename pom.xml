@@ -16,7 +16,7 @@
         <commons.collections>3.2.2</commons.collections>
         <commons.io>2.16.1</commons.io>
         <commons.lang>2.6</commons.lang>
-        <commons.logging>1.2</commons.logging>
+        <commons.logging>1.3.2</commons.logging>
         <guava.version>32.1.3-jre</guava.version>
 
         <jsr305.version>3.0.2</jsr305.version>
@@ -27,9 +27,10 @@
         <junit.version>4.13.2</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
 
-        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
-        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+        <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+        <maven.jar.plugin.version>3.4.1</maven.jar.plugin.version>
 
     </properties>
     <dependencyManagement>
@@ -206,7 +207,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version> <!-- Kan evt. oppdatere denne også -->
+                    <version>${maven.jar.plugin.version}</version>
                 </plugin>
                 <!--plugin>
                     <groupId>org.owasp</groupId>
