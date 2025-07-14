@@ -13,9 +13,10 @@
     </parent>
 
     <properties>
-        <spring-data-redis.version>2.7.18</spring-data-redis.version>
-        <lettuce.version>6.6.0.RELEASE</lettuce.version>
+        <spring-data-redis.version>3.5.1</spring-data-redis.version>
+        <lettuce.version>6.7.1.RELEASE</lettuce.version>
         <maven-assembly.version>3.7.1</maven-assembly.version>
+        <junit.jupiter.version>5.12.2</junit.jupiter.version>
     </properties>
     <dependencies>
         <dependency>
@@ -50,17 +51,10 @@
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
