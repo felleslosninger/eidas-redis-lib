@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: eidas-redis-lib
+  description: Redis lib to use with the EU eidas components only
+spec:
+  type: library
+  lifecycle: production
+  owner: team-idporten
