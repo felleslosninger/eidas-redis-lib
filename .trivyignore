@@ -1,2 +1,2 @@
  # trivy ignore.
- CVE-2025-41249 # spring-core this has to be aligned with the spring version used, so we can't use the latest
+ CVE-2025-27820 #  HttpComponents: PSL (Public Suffix List) validation bypass
