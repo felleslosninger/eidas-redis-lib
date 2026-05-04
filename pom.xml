@@ -8,10 +8,10 @@
     <name>eidas-redis-lib</name>
     <properties>
         <java.version>17</java.version>
-        <spring.version>5.3.37</spring.version>
+        <spring.version>6.2.9</spring.version> <!-- keep in sync with eidas-connector/proxy-service -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <eidas.version>2.9.0</eidas.version>
-        <servlet.version>3.1.0</servlet.version>
+        <eidas.version>3.0.0</eidas.version>
+        <servlet-api.version>6.0.0</servlet-api.version>
 
         <commons.collections>3.2.2</commons.collections>
         <commons.io>2.16.1</commons.io>
@@ -22,7 +22,7 @@
         <jsr305.version>3.0.2</jsr305.version>
         <lombok.version>1.18.38</lombok.version>
         <mockito.version>5.12.0</mockito.version>
-        <javax.cache.version>1.1.1</javax.cache.version>
+        <cache-api.version>1.1.1</cache-api.version>
 
         <junit.version>4.13.2</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -111,9 +111,9 @@
                 <version>${eidas.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet.version}</version>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>javax.cache</groupId>
                 <artifactId>cache-api</artifactId>
-                <version>${javax.cache.version}</version>
+                <version>${cache-api.version}</version>
             </dependency>
         </dependencies>
 

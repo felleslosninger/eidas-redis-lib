@@ -13,7 +13,7 @@ eidas-redis-lib also uses other 3.party dependencies that is not in use in EU eI
 2. Unzip the package
 3. Compare the versions of libs and java used in the eu software and upgrade the pom-file in this project accordingly
 4. Run the command mvn install in eidas parent directory
-5. install eidas libs locally  ``` mvn install:install-file -Dfile=eidas-commons-2.9.0.jar -DgroupId=eu.eidas -DartifactID=eidas-commons -Dversion=2.9.0 -Dpackaging=jar```
+5. install eidas libs locally  ``` mvn install:install-file -Dfile=eidas-commons-3.0.0.jar -DgroupId=eu.eidas -DartifactID=eidas-commons -Dversion=3.0.0 -Dpackaging=jar```
 6. check locally with DEV-SNAPSHOT if it works (see e.g. eidas-idporten-connector for how to run locally
 7. And in github packages when ok and make a new release. See next section
 
@@ -22,14 +22,14 @@ eidas-redis-lib also uses other 3.party dependencies that is not in use in EU eI
 Download EU-software from https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon), use button "Download" (zip).
 
 Unpack and find these artifacts for upload to eidas-redis-lib packages:
-* eidas-parent-2.9.0.pom
-* eidas-commons-2.9.0.jar
-* eidas-encryption-2.9.0.jar
-* eidas-light-commons-2.9.0.jar
-* eidas-saml-engine-2.9.0.jar
-* eidas-saml-metadata-2.9.0.jar
+* eidas-parent-3.0.0.pom
+* eidas-commons-3.0.0.jar
+* eidas-encryption-3.0.0.jar
+* eidas-light-commons-3.0.0.jar
+* eidas-saml-engine-3.0.0.jar
+* eidas-saml-metadata-3.0.0.jar
 
-NB: Fetch the correct version, example above is for version `2.9.0`.
+NB: Fetch the correct version, example above is for version `3.0.0`.
 
 Create a token on Github for your user under setting with the correct accesses to create packages: https://github.com/settings/tokens with scopes: `repo, write:packages`.
 Temporary add this token to your Maven settings.xml file: `~/m2/settings.xml` under `<servers><server>github</id><password> YOUR-PACKAGE_WRITE_TOKEN </password>...`.
@@ -40,11 +40,11 @@ mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/
 ```
 E.g. like this:
 ```
-mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eu-packages/eidas-saml-metadata-2.9.0.jar
+mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eidas-saml-metadata-3.0.0.jar
 ```
-For parent pom.xml you must propably also add an extra parameter for pomFile:
+For parent pom.xml you must also add an extra parameter for pomFile:
 ```
-mvn deploy:deploy-file -DpomFile=eu-packages/eidas-parent-2.9.0.pom -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -Dfile=eu-packages/eidas-parent-2.9.0.pom
+mvn deploy:deploy-file -DpomFile=eidas-parent-3.0.0.pom -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -DgroupID=eu.eidas -DartifactId=eidas-parent -Dversion=3.0.0 -Dfile=eidas-parent-3.0.0.pom 
 ```
 You do not need to add distributionManagement to the command since this is already added to pom.xml in this repo.
 
