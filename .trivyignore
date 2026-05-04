@@ -1,2 +1,3 @@
  # trivy ignore.
- CVE-2025-27820 #  HttpComponents: PSL (Public Suffix List) validation bypass
+CVE-2025-27820 # HttpComponents: PSL (Public Suffix List) validation bypass
+CVE-2025-41249 # spring-core Spring Framework Annotation Detection Vulnerability
