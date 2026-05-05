@@ -7,7 +7,7 @@
     <version>DEV-SNAPSHOT</version>
     <name>eidas-redis-lib</name>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <spring.version>6.2.9</spring.version> <!-- keep in sync with eidas-connector/proxy-service -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <eidas.version>3.0.0</eidas.version>
