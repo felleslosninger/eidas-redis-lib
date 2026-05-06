@@ -62,11 +62,11 @@ public class RedisConfig {
                 .master(sentinelMaster);
 
         for (String node : nodes) {
-            String[] parts = node.split(":");
+            String[] parts = node.trim().split(":");
             if(parts.length != 2) {
-                throw new IllegalArgumentException(String.format("Invalid sentinel node configuration %s", node));
+                throw new IllegalArgumentException(String.format("Invalid sentinel node configuration %s", node.trim()));
             }
-            sentinelConfig.sentinel(parts[0], Integer.parseInt(parts[1]));
+            sentinelConfig.sentinel(parts[0].trim(), Integer.parseInt(parts[1].trim()));
         }
 
         if (StringUtils.hasText(redisPassword)) {

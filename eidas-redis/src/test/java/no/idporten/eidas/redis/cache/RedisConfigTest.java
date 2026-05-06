@@ -78,6 +78,15 @@ public class RedisConfigTest {
         assertTrue(factory.isRedisSentinelAware());
     }
 
+    @Test
+    public void testMultipleSentinelRedisConnectionFactoryWithWhitespace() {
+        config.setSentinelNodes("node1:26379, node2:26379");
+        config.setSentinelMaster("mymaster");
+        LettuceConnectionFactory factory = config.redisConnectionFactory();
+        assertNotNull(factory);
+        assertTrue(factory.isRedisSentinelAware());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testSentinelRedisConnectionFactoryInvalidNode() {
         config.setSentinelNodes("node1:26379,invalid_node");
