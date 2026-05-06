@@ -16,6 +16,8 @@
   ~ See the Licence for the specific language governing permissions and
   ~ limitations under the Licence.
   -->
+
+<!-- just an example of how to configure the specific communication caches with Redis, the actual configuration can be adapted to the needs of the deployment environment -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
@@ -26,6 +28,15 @@
         <property name="redisPort" value = "${redis.port}"/>
         <property name="sentinelNodes" value = "${redis.sentinelNodes}"/>
         <property name="sentinelMaster" value = "${redis.sentinelMaster}"/>
+    </bean>
+
+    <bean id="connectorSpecificCacheProvider" class="no.idporten.eidas.redis.cache.EidasRedisCacheManager">
+        <constructor-arg>
+            <map>
+                <entry key="specificNodeConnectorRequestCache" value-ref="specificNodeConnectorRequestCacheImpl"/>
+                <entry key="nodeSpecificConnectorResponseCache" value-ref="nodeSpecificConnectorResponseCacheImpl"/>
+            </map>
+        </constructor-arg>
     </bean>
 
     <bean id="redisProxyConfig" class="no.idporten.eidas.redis.cache.proxy.RedisProxyConfig">

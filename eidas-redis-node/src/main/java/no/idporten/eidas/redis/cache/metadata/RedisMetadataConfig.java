@@ -21,6 +21,17 @@ public class RedisMetadataConfig {
 
 
 
+    @Bean(name = "redisNodeTemplate")
+    public RedisTemplate<String, Object> redisNodeTemplate(RedisConnectionFactory redisConnectionFactory) {
+
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new JdkSerializationRedisSerializer());
+
+        return template;
+    }
+
     @Bean(name = "redisMetadataTemplate")
     public RedisTemplate<String, EidasMetadataParametersI> redisMetadataTemplate(RedisConnectionFactory redisConnectionFactory) {
 

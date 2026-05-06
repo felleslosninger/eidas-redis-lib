@@ -30,9 +30,33 @@ public class RedisConfigTest {
         assertFalse(factory.isRedisSentinelAware());
     }
 
+    @Test
+    public void testStandaloneRedisConnectionFactoryWithoutPassword() {
+        config.setSentinelNodes(null);
+        config.setRedisPassword(null);
+        LettuceConnectionFactory factory = config.redisConnectionFactory();
+        assertNotNull(factory);
+        assertEquals("localhost", factory.getHostName());
+        assertEquals(6379, factory.getPort());
+    }
+
+    @Test
+    public void testStandaloneRedisConnectionFactoryEmptySentinelNodes() {
+        config.setSentinelNodes("");
+        LettuceConnectionFactory factory = config.redisConnectionFactory();
+        assertNotNull(factory);
+        assertFalse(factory.isRedisSentinelAware());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testStandaloneRedisConnectionFactoryMissingHost() {
         config.setRedisHost(null);
+        config.redisConnectionFactory();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testStandaloneRedisConnectionFactoryMissingPort() {
+        config.setRedisPort(null);
         config.redisConnectionFactory();
     }
 
@@ -66,5 +90,29 @@ public class RedisConfigTest {
         config.setSentinelMaster("mymaster");
         config.setRedisPassword(null);
         config.redisConnectionFactory();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSentinelRedisConnectionFactoryMissingMaster() {
+        config.setSentinelNodes("node1:26379");
+        config.setSentinelMaster(null);
+        config.redisConnectionFactory();
+    }
+
+    @Test
+    public void testGetRedisPort() {
+        config.setRedisPort("6380");
+        assertEquals(6380, config.getRedisPort());
+    }
+
+    @Test
+    public void testDefaultIssuerName() {
+        assertEquals("eidas-proxy", config.getIssuerName());
+    }
+
+    @Test
+    public void testSetIssuerName() {
+        config.setIssuerName("custom-issuer");
+        assertEquals("custom-issuer", config.getIssuerName());
     }
 }
