@@ -16,6 +16,7 @@
   ~ See the Licence for the specific language governing permissions and
   ~ limitations under the Licence.
   -->
+<!--just an example of how to configure the redis cache manager with the metadata cache, and how to set up the redis config. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
@@ -34,14 +35,12 @@
         <constructor-arg type="java.lang.String" value="metadata"/>
         <constructor-arg type="long" value="-1"/>
         <constructor-arg ref="redisMetadataTemplate"/>
-        <constructor-arg><null/></constructor-arg>
     </bean>
 
     <bean id="metadataRolloverCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching" lazy-init="true">
         <constructor-arg type="java.lang.String" value="metadata"/>
         <constructor-arg type="long" value="-1"/>
         <constructor-arg ref="redisMetadataTemplate"/>
-        <constructor-arg><null/></constructor-arg>
     </bean>
 
     <!-- EidasRedisCacheManager with key-to-bean mapping -->

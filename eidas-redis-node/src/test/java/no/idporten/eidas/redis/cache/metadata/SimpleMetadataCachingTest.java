@@ -18,9 +18,7 @@
 
 package no.idporten.eidas.redis.cache.metadata;
 
-import eu.eidas.auth.engine.core.validator.eidas.EidasResponseValidator;
 import eu.eidas.auth.engine.metadata.EidasMetadataParametersI;
-import no.idporten.eidas.redis.cache.EidasRedisCacheManager;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +30,7 @@ import javax.cache.Cache;
 public class SimpleMetadataCachingTest {
     @Mock
     private  RedisTemplate<String, EidasMetadataParametersI> redisTemplate;
-    @Mock
-    private EidasRedisCacheManager cacheManager;
+
     @Test
     public void getCache() {
         SimpleMetadataCaching simpleMetadataCaching = new SimpleMetadataCaching("metadata", -1,redisTemplate);
