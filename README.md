@@ -44,7 +44,7 @@ mvn deploy:deploy-file -DrepositoryId=github -Durl=https://maven.pkg.github.com/
 ```
 For parent pom.xml you must also add an extra parameter for pomFile:
 ```
-mvn deploy:deploy-file -DpomFile=eidas-parent-3.0.0.pom -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -DgroupID=eu.eidas -DartifactId=eidas-parent -Dversion=3.0.0 -Dfile=eidas-parent-3.0.0.pom 
+mvn deploy:deploy-file -DpomFile=eidas-parent-3.0.0.pom -DrepositoryId=github -Durl=https://maven.pkg.github.com/felleslosninger/eidas-redis-lib -DgroupId=eu.eidas -DartifactId=eidas-parent -Dversion=3.0.0 -Dfile=eidas-parent-3.0.0.pom 
 ```
 You do not need to add distributionManagement to the command since this is already added to pom.xml in this repo.
 
