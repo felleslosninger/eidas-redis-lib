@@ -205,15 +205,14 @@ public class RedisCacheTest {
         assertEquals("test", cache.getName());
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testClose() {
         cache.close();
-        // close just logs, no exception
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testIsClosed() {
-        assertFalse(cache.isClosed());
+        cache.isClosed();
     }
 
     @Test(expected = UnsupportedOperationException.class)

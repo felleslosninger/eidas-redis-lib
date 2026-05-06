@@ -19,6 +19,9 @@ public class EidasRedisCacheManagerTest {
     @Mock
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Mock
+    private Cache<String, String> mockCache;
+
     private EidasRedisCacheManager cacheManager;
 
 
@@ -67,10 +70,15 @@ public class EidasRedisCacheManagerTest {
 
     @Test
     public void testDestroyCache() {
-        cacheManager.destroyCache("functionalCache");
-        // After destroy, getting the cache should throw
+        Map<String, Cache<?, ?>> cacheBeanMapping = new HashMap<>();
+        cacheBeanMapping.put("mockCache", mockCache);
+        EidasRedisCacheManager mgr = new EidasRedisCacheManager(cacheBeanMapping);
+
+        mgr.destroyCache("mockCache");
+
+        verify(mockCache).close();
         try {
-            cacheManager.getCache("functionalCache");
+            mgr.getCache("mockCache");
             fail("Expected IllegalStateException");
         } catch (IllegalStateException e) {
             // expected
@@ -85,16 +93,27 @@ public class EidasRedisCacheManagerTest {
 
     @Test
     public void testClose() {
-        assertFalse(cacheManager.isClosed());
-        cacheManager.close();
-        assertTrue(cacheManager.isClosed());
+        Map<String, Cache<?, ?>> cacheBeanMapping = new HashMap<>();
+        cacheBeanMapping.put("mockCache", mockCache);
+        EidasRedisCacheManager mgr = new EidasRedisCacheManager(cacheBeanMapping);
+
+        assertFalse(mgr.isClosed());
+        mgr.close();
+        assertTrue(mgr.isClosed());
+        verify(mockCache).close();
     }
 
     @Test
     public void testCloseIdempotent() {
-        cacheManager.close();
-        cacheManager.close();
-        assertTrue(cacheManager.isClosed());
+        Map<String, Cache<?, ?>> cacheBeanMapping = new HashMap<>();
+        cacheBeanMapping.put("mockCache", mockCache);
+        EidasRedisCacheManager mgr = new EidasRedisCacheManager(cacheBeanMapping);
+
+        mgr.close();
+        mgr.close();
+        assertTrue(mgr.isClosed());
+        // close() on the cache should only be called once
+        verify(mockCache, times(1)).close();
     }
 
     @Test
@@ -152,10 +171,9 @@ public class EidasRedisCacheManagerTest {
 
     @Test
     public void testConstructorWithNullMapping() {
-        try (EidasRedisCacheManager mgr = new EidasRedisCacheManager(null)) {
-            assertNotNull(mgr.getCacheNames());
-            assertFalse(mgr.getCacheNames().iterator().hasNext());
-        }
+        EidasRedisCacheManager mgr = new EidasRedisCacheManager(null);
+        assertNotNull(mgr.getCacheNames());
+        assertFalse(mgr.getCacheNames().iterator().hasNext());
     }
 
     @Test
