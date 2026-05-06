@@ -207,7 +207,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         try {
             // Fetch all keys that match the prefix pattern
             Set<String> keys = redisTemplate.keys(cachePrefix + "*");
-            if (!keys.isEmpty()) {
+            if (keys != null && !keys.isEmpty()) {
                 redisTemplate.delete(keys);
             }
 
