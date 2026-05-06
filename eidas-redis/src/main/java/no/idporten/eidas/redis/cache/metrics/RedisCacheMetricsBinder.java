@@ -37,10 +37,10 @@ import io.micrometer.common.lang.NonNull;
  */
 public class RedisCacheMetricsBinder implements MeterBinder {
 
-    private final List<Cache> caches;
+    private final List<Cache<?,?>> caches;
 
     public RedisCacheMetricsBinder(CacheManager cacheManager) {
-        this.caches = StreamSupport.stream(cacheManager.getCacheNames().spliterator(), true)
+        this.caches = StreamSupport.stream(cacheManager.getCacheNames().spliterator(), false)
                 .map(cacheManager::getCache)
                 .collect(Collectors.toList());
     }
@@ -48,18 +48,19 @@ public class RedisCacheMetricsBinder implements MeterBinder {
     @Override
     public void bindTo(@NonNull MeterRegistry registry) {
         for (Cache<?,?> cache : caches) {
-            RedisCache<?, ?> redisCache = (RedisCache<?, ?>) cache;
-            Gauge.builder("cache.size", redisCache, c -> {
-                        try {
-                            Set<?> keys = c.getRedisTemplate().keys(c.getCachePrefix() + "*");
-                            return keys.size();
-                        } catch (Exception e) {
-                            return -1;
-                        }
-                    })
-                    .tag("cache", redisCache.getName())
-                    .description("Number of entries in the Redis cache")
-                    .register(registry);
+            if (cache instanceof RedisCache<?,?> redisCache) {
+                Gauge.builder("cache.size", redisCache, c -> {
+                            try {
+                                Set<?> keys = c.getRedisTemplate().keys(c.getCachePrefix() + "*");
+                                return keys.size();
+                            } catch (Exception e) {
+                                return -1;
+                            }
+                        })
+                        .tag("cache", redisCache.getName())
+                        .description("Number of entries in the Redis cache")
+                        .register(registry);
+            }
         }
     }
 }
