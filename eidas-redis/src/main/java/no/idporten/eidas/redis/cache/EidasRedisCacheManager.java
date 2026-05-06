@@ -32,6 +32,9 @@ public class EidasRedisCacheManager implements CacheManager {
     }
 
     public void addCache(String functionalName, Cache<?, ?> cache) {
+        if (cache instanceof RedisCache<?,?> redisCache) {
+            redisCache.setCacheManager(this);
+        }
         caches.put(functionalName, cache);
         log.info("Registered cache bean for functional name: {}", functionalName);
     }

@@ -244,12 +244,12 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
     @Override
     public void close() {
-        log.info("Closing RedisCache with prefix: {}", cachePrefix);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isClosed() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
