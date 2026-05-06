@@ -7,7 +7,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import javax.cache.CacheManager;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -22,9 +21,6 @@ public class RedisCacheTest {
 
     @Mock
     private ValueOperations<String, String> valueOperations;
-
-    @Mock
-    private CacheManager cacheManager;
 
     private RedisCache<String, String> cache;
 
