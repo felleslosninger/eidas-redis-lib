@@ -19,7 +19,7 @@ eidas-redis-lib also uses other 3.party dependencies that is not in use in EU eI
 
 ## Upload of EU-artifacts to Packages
 
-Download EU-software from https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+2.9 (velg siste versjon), use button "Download" (zip).
+Download EU-software from https://ec.europa.eu/digital-building-blocks/sites/display/DIGITAL/eIDAS-Node+version+3.0.0 (velg siste versjon), use button "Download" (zip).
 
 Unpack and find these artifacts for upload to eidas-redis-lib packages:
 * eidas-parent-3.0.0.pom
