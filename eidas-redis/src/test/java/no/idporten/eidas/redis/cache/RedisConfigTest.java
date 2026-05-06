@@ -79,7 +79,7 @@ public class RedisConfigTest {
     }
 
     @Test
-    public void testMultipleSentinelRedisConnectionFactoryWithWhitespace() {
+    public void testSentinelNodesWithWhitespaceAfterComma() {
         config.setSentinelNodes("node1:26379, node2:26379");
         config.setSentinelMaster("mymaster");
         LettuceConnectionFactory factory = config.redisConnectionFactory();
