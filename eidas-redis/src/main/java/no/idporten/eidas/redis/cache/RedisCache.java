@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@Getter
 public class RedisCache<K, V> implements Cache<K, V> {
     protected final String cachePrefix;
     protected final Long timeToLiveInSeconds;

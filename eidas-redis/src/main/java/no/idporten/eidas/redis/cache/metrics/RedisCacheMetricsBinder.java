@@ -19,19 +19,23 @@
 package no.idporten.eidas.redis.cache.metrics;
 
 
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.MeterBinder;
+import no.idporten.eidas.redis.cache.RedisCache;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import io.micrometer.common.lang.NonNull;
 
 /**
- * todo
+ * Bind any custom metrics for RedisCaches here
  */
-public class RedisCacheMetricsBinder  implements MeterBinder {
+public class RedisCacheMetricsBinder implements MeterBinder {
 
     private final List<Cache> caches;
 
@@ -42,7 +46,20 @@ public class RedisCacheMetricsBinder  implements MeterBinder {
     }
 
     @Override
-    public void bindTo(MeterRegistry registry) {
-        // Noop
+    public void bindTo(@NonNull MeterRegistry registry) {
+        for (Cache<?,?> cache : caches) {
+            RedisCache<?, ?> redisCache = (RedisCache<?, ?>) cache;
+            Gauge.builder("cache.size", redisCache, c -> {
+                        try {
+                            Set<?> keys = c.getRedisTemplate().keys(c.getCachePrefix() + "*");
+                            return keys.size();
+                        } catch (Exception e) {
+                            return -1;
+                        }
+                    })
+                    .tag("cache", redisCache.getName())
+                    .description("Number of entries in the Redis cache")
+                    .register(registry);
+        }
     }
 }
