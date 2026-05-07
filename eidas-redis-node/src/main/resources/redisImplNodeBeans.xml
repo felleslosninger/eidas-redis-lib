@@ -16,6 +16,7 @@
   ~ See the Licence for the specific language governing permissions and
   ~ limitations under the Licence.
   -->
+<!--just an example of how to configure the redis cache manager with the metadata cache, and how to set up the redis config. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
@@ -30,37 +31,6 @@
     <bean id="redisMetadataConfig" class="no.idporten.eidas.redis.cache.metadata.RedisMetadataConfig">
     </bean>
 
-
-    <bean id="springServiceCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="antiReplayCacheService"/>
-    </bean>
-
-    <bean id="springConnectorCMapAntiReplayProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="antiReplayCacheConnector"/>
-        <constructor-arg value="1800"/>
-    </bean>
-    <bean id="springConnectorCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="connectorRequestCorrelationCacheService"/>
-        <constructor-arg value="1800"/>
-    </bean>
-    <bean id="springServiceCMapCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="proxyServiceRequestCorrelationCacheService"/>
-        <constructor-arg value="1800"/>
-    </bean>
-    <bean id="springConnectorCMapspecificLightCorProviderImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="specificConnectorLtRequestCorrelationCacheService"/>
-        <constructor-arg value="1800"/>
-    </bean>
-    <bean id="connectorFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="connectorFlowIdCacheService"/>
-        <constructor-arg value="1800"/>
-    </bean>
-    <bean id="proxyServiceFlowIdCacheImpl" class="no.idporten.eidas.redis.cache.RedisCache">
-        <constructor-arg value="proxyServiceFlowIdCacheService"/>
-        <constructor-arg value="1800"/>
-    </bean>
-
-    <!-- Simple cache for this just to verify the others -->
     <bean id="metadataCacheImpl" class="no.idporten.eidas.redis.cache.metadata.SimpleMetadataCaching">
         <constructor-arg type="java.lang.String" value="metadata"/>
         <constructor-arg type="long" value="-1"/>
@@ -71,6 +41,16 @@
         <constructor-arg type="java.lang.String" value="metadata"/>
         <constructor-arg type="long" value="-1"/>
         <constructor-arg ref="redisMetadataTemplate"/>
+    </bean>
+
+    <!-- EidasRedisCacheManager with key-to-bean mapping -->
+    <bean id="eidasRedisNodeCacheManager" class="no.idporten.eidas.redis.cache.EidasRedisCacheManager">
+        <constructor-arg>
+            <map>
+                <entry key="metadataConnector" value-ref="metadataCacheImpl"/>
+                <entry key="metadataRolloverConnector" value-ref="metadataRolloverCacheImpl"/>
+            </map>
+        </constructor-arg>
     </bean>
 
 </beans>

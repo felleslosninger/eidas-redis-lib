@@ -1,6 +1,7 @@
 package no.idporten.eidas.redis.cache;
 
-import eu.eidas.auth.commons.cache.ConcurrentCacheService;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.QueryTimeoutException;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -15,13 +16,17 @@ import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorException;
 import javax.cache.processor.EntryProcessorResult;
 import java.util.*;
+import org.springframework.data.redis.core.ScanOptions;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
+@Getter
+public class RedisCache<K, V> implements Cache<K, V> {
     protected final String cachePrefix;
     protected final Long timeToLiveInSeconds;
     private final RedisTemplate<String, V> redisTemplate;
+    @Setter
+    private CacheManager cacheManager;
 
     public RedisCache(String cachePrefix, long timeToLiveInSeconds, RedisTemplate<String, V> redisTemplate) {
         this.cachePrefix = cachePrefix;
@@ -29,6 +34,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
         this.redisTemplate = redisTemplate;
         log.info("RedisCache instansiated with prefix: {} and timeToLiveInSeconds: {} and redistemplate set={}", cachePrefix, timeToLiveInSeconds, redisTemplate!=null);
     }
+
 
     @Override
     public V get(K key) {
@@ -49,7 +55,7 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
         try {
             return redisTemplate.hasKey(keyWithPrefix(key));
         } catch (RedisConnectionFailureException | QueryTimeoutException e) {
-            log.error("Failed to check presence of key in cache: {}", key, e.getMessage());
+            log.error("Failed to check presence of key in cache: {}: {}", key, e.getMessage());
             throw e;
         }
     }
@@ -200,12 +206,17 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public void clear() {
         try {
-            // Fetch all keys that match the prefix pattern
-            Set<String> keys = redisTemplate.keys(cachePrefix + "*");
-            if (keys != null && !keys.isEmpty()) {
+            // Use SCAN to iterate keys matching the prefix pattern (non-blocking, O(N) distributed)
+            List<String> keys = new ArrayList<>();
+            redisTemplate.scan(
+                    ScanOptions.scanOptions()
+                            .match(cachePrefix + ":*")
+                            .count(100)
+                            .build()
+            ).forEachRemaining(key -> keys.add((String) key));
+            if (!keys.isEmpty()) {
                 redisTemplate.delete(keys);
             }
-
         } catch (Exception e) {
             log.error("Failed to clear cache", e);
             throw e;
@@ -229,12 +240,12 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException();
+        return cachePrefix;
     }
 
     @Override
     public CacheManager getCacheManager() {
-        throw new UnsupportedOperationException();
+        return cacheManager;
     }
 
     @Override
@@ -265,12 +276,6 @@ public class RedisCache<K, V> implements Cache<K, V>, ConcurrentCacheService {
     @Override
     public Iterator<Entry<K, V>> iterator() {
         throw new UnsupportedOperationException();
-    }
-
-
-    @Override
-    public Cache getConfiguredCache() {
-        return this;
     }
 
     private String keyWithPrefix(K key) {

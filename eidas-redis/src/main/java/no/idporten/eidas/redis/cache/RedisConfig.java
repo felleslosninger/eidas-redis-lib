@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Configuration
@@ -36,16 +34,16 @@ public class RedisConfig {
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        if (StringUtils.isEmpty(sentinelNodes)) {
+        if (!StringUtils.hasText(sentinelNodes)) {
             log.info("Creating lettuce connection factory for standalone redis");
-            if (StringUtils.isEmpty(redisPort) || StringUtils.isEmpty(redisHost)) {
+            if (!StringUtils.hasText(redisPort) || !StringUtils.hasText(redisHost)) {
                 throw new IllegalArgumentException(String.format("Missing redis configuration redisHost: %s redisPort: %s  in standalone mode", redisHost, redisPort));
             }
-            LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisHost, getRedisPort());
+            RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration(redisHost, getRedisPort());
             if (StringUtils.hasText(redisPassword)) {
-                lettuceConnectionFactory.setPassword(redisPassword);
+                standaloneConfig.setPassword(redisPassword);
             }
-            return lettuceConnectionFactory;
+            return new LettuceConnectionFactory(standaloneConfig);
         } else {
             return createSentinelConnectionFactory();
         }
@@ -53,26 +51,28 @@ public class RedisConfig {
 
     private LettuceConnectionFactory createSentinelConnectionFactory() {
         log.info("Creating lettuce connection factory for redis sentinel");
-        if (StringUtils.isEmpty(sentinelMaster) || StringUtils.isEmpty(sentinelNodes) || StringUtils.isEmpty(redisPassword)) {
-            throw new IllegalArgumentException(String.format("Missing sentinel configuration sentinelMaster: %s, sentinelNodes: %s, redisPassword is set: %s", sentinelMaster, sentinelNodes, StringUtils.isEmpty(redisPassword)));
+        if (!StringUtils.hasText(sentinelMaster) || !StringUtils.hasText(sentinelNodes) || !StringUtils.hasText(redisPassword)) {
+            throw new IllegalArgumentException(String.format("Missing sentinel configuration sentinelMaster: %s, sentinelNodes: %s, redisPassword is set: %s",
+                    sentinelMaster,
+                    sentinelNodes,
+                    StringUtils.hasText(redisPassword)));
         }
-        List<String> nodes = Arrays.asList(sentinelNodes.split(","));
+        String[] nodes = sentinelNodes.split(",");
         RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
                 .master(sentinelMaster);
 
         for (String node : nodes) {
-            String[] parts = node.split(":");
+            String[] parts = node.trim().split(":");
             if(parts.length != 2) {
-                throw new IllegalArgumentException(String.format("Invalid sentinel node configuration %s", node));
+                throw new IllegalArgumentException(String.format("Invalid sentinel node configuration %s", node.trim()));
             }
-            sentinelConfig.sentinel(parts[0], Integer.parseInt(parts[1]));
+            sentinelConfig.sentinel(parts[0].trim(), Integer.parseInt(parts[1].trim()));
         }
 
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(sentinelConfig);
         if (StringUtils.hasText(redisPassword)) {
-            lettuceConnectionFactory.setPassword(redisPassword);
+            sentinelConfig.setPassword(redisPassword);
         }
-        return lettuceConnectionFactory;
+        return new LettuceConnectionFactory(sentinelConfig);
     }
 
 }

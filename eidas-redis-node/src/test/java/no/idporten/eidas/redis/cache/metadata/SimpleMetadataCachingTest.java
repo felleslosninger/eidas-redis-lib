@@ -30,6 +30,7 @@ import javax.cache.Cache;
 public class SimpleMetadataCachingTest {
     @Mock
     private  RedisTemplate<String, EidasMetadataParametersI> redisTemplate;
+
     @Test
     public void getCache() {
         SimpleMetadataCaching simpleMetadataCaching = new SimpleMetadataCaching("metadata", -1,redisTemplate);
