@@ -24,7 +24,6 @@ import no.idporten.eidas.redis.cache.RedisCache;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.cache.Cache;
-import javax.cache.CacheManager;
 
 /**
  * Abstract class that implements getter and setter for {@link EidasMetadataParametersI}
