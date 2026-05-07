@@ -1,4 +1,4 @@
- # trivy ignore.
+ # trivy ignore
 CVE-2025-27820 # HttpComponents: PSL (Public Suffix List) validation bypass
 CVE-2025-41249 # spring-core Spring Framework Annotation Detection Vulnerability
 CVE-2025-24970 # io.netty:netty-handler
