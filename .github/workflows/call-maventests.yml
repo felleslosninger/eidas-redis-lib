@@ -12,6 +12,9 @@ on:
 jobs:
   call-workflow-maven-build:
     uses: felleslosninger/github-workflows/.github/workflows/ci-maven-build-lib.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
     with:
       java-version: 21
       sbom-path: ./eidas-redis/target/
