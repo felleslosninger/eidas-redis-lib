@@ -7,6 +7,9 @@ on:
 jobs:
   call-workflow-maven-deploy:
     uses: felleslosninger/github-workflows/.github/workflows/ci-maven-deploy.yml@main
+    permissions:
+      contents: write
+      packages: write
     with:
       java-version: 21
       sbom-path: ./eidas-redis/target/
