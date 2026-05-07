@@ -19,25 +19,26 @@
 package no.idporten.eidas.redis.cache.metrics;
 
 
+import io.micrometer.common.lang.NonNull;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.MeterBinder;
+import lombok.extern.slf4j.Slf4j;
 import no.idporten.eidas.redis.cache.RedisCache;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import io.micrometer.common.lang.NonNull;
 
 /**
  * Bind any custom metrics for RedisCaches here
  */
+@Slf4j
 public class RedisCacheMetricsBinder implements MeterBinder {
 
-    private final List<Cache<?,?>> caches;
+    private final List<Cache<?, ?>> caches;
 
     public RedisCacheMetricsBinder(CacheManager cacheManager) {
         this.caches = StreamSupport.stream(cacheManager.getCacheNames().spliterator(), false)
@@ -47,26 +48,42 @@ public class RedisCacheMetricsBinder implements MeterBinder {
 
     @Override
     public void bindTo(@NonNull MeterRegistry registry) {
-        for (Cache<?,?> cache : caches) {
-            if (cache instanceof RedisCache<?,?> redisCache) {
-                Gauge.builder("cache.size", redisCache, c -> {
-                            try {
-                                List<Object> keys = new ArrayList<>();
-                                c.getRedisTemplate().scan(
-                                        org.springframework.data.redis.core.ScanOptions.scanOptions()
-                                                .match(c.getCachePrefix() + ":*")
-                                                .count(100)
-                                                .build()
-                                ).forEachRemaining(keys::add);
-                                return keys.size();
-                            } catch (Exception e) {
-                                return -1;
-                            }
-                        })
-                        .tag("cache", redisCache.getName())
-                        .description("Number of entries in the Redis cache")
-                        .register(registry);
+        for (Cache<?, ?> cache : caches) {
+            if (cache instanceof RedisCache<?, ?> redisCache) {
+                registerCacheSizeGauge(registry, redisCache);
             }
+        }
+    }
+
+    private void registerCacheSizeGauge(MeterRegistry registry, RedisCache<?, ?> redisCache) {
+        Gauge.builder("cache.size", redisCache, this::measureCacheSize)
+                .tag("cache", redisCache.getName())
+                .description("Number of entries in the Redis cache")
+                .register(registry);
+    }
+
+    private int measureCacheSize(RedisCache<?, ?> cache) {
+        try (var cursor = cache.getRedisTemplate().scan(
+                org.springframework.data.redis.core.ScanOptions.scanOptions()
+                        .match(cache.getCachePrefix() + ":*")
+                        .count(100)
+                        .build()
+        )) {
+            if (cursor == null) {
+                log.warn("RedisTemplate.scan() returned null for cache '{}'; reporting size as 0", cache.getName());
+                return 0;
+            }
+
+            int count = 0;
+            while (cursor.hasNext()) {
+                cursor.next();
+                count++;
+            }
+            return count;
+        } catch (Exception e) {
+            log.warn("Failed to measure size of cache '{}': {}", cache.getName(), e.getMessage());
+            log.debug("Cache size measurement failure details", e);
+            return -1;
         }
     }
 }

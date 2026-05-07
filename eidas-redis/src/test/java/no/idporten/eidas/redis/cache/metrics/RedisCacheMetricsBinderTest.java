@@ -8,13 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 
 import javax.cache.CacheManager;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -56,12 +57,12 @@ public class RedisCacheMetricsBinderTest {
 
     @Test
     public void testGaugeReturnsCacheSize() {
-        Set<String> keys = new HashSet<>(Arrays.asList("cache1:key1", "cache1:key2", "cache1:key3"));
         RedisCache<String, String> cache = new RedisCache<>("cache1", 300, redisTemplate);
+        Cursor<String> cursor = mockCursor(Arrays.asList("cache1:key1", "cache1:key2", "cache1:key3").iterator());
 
         when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("cache1"));
         doReturn(cache).when(cacheManager).getCache("cache1");
-        when(redisTemplate.keys("cache1*")).thenReturn(keys);
+        doReturn(cursor).when(redisTemplate).scan(any(ScanOptions.class));
 
         RedisCacheMetricsBinder binder = new RedisCacheMetricsBinder(cacheManager);
         binder.bindTo(registry);
@@ -72,12 +73,29 @@ public class RedisCacheMetricsBinderTest {
     }
 
     @Test
-    public void testGaugeReturnsZeroForEmptyCache() {
+    public void testGaugeReturnsZeroOnNullCursor() {
+        RedisCache<String, String> cache = new RedisCache<>("nullcursor", 300, redisTemplate);
+
+        when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("nullcursor"));
+        doReturn(cache).when(cacheManager).getCache("nullcursor");
+        doReturn(null).when(redisTemplate).scan(any(ScanOptions.class));
+
+        RedisCacheMetricsBinder binder = new RedisCacheMetricsBinder(cacheManager);
+        binder.bindTo(registry);
+
+        Gauge gauge = registry.find("cache.size").tag("cache", "nullcursor").gauge();
+        assertNotNull(gauge);
+        assertEquals(0.0, gauge.value(), 0.0);
+    }
+
+    @Test
+    public void testGaugeReturnsZeroForEmptyCacheAndHasDescription() {
         RedisCache<String, String> cache = new RedisCache<>("empty", 300, redisTemplate);
+        Cursor<String> cursor = mockCursor(Collections.<String>emptyList().iterator());
 
         when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("empty"));
         doReturn(cache).when(cacheManager).getCache("empty");
-        when(redisTemplate.keys("empty*")).thenReturn(Collections.emptySet());
+        doReturn(cursor).when(redisTemplate).scan(any(ScanOptions.class));
 
         RedisCacheMetricsBinder binder = new RedisCacheMetricsBinder(cacheManager);
         binder.bindTo(registry);
@@ -85,6 +103,7 @@ public class RedisCacheMetricsBinderTest {
         Gauge gauge = registry.find("cache.size").tag("cache", "empty").gauge();
         assertNotNull(gauge);
         assertEquals(0.0, gauge.value(), 0.0);
+        assertEquals("Number of entries in the Redis cache", gauge.getId().getDescription());
     }
 
     @Test
@@ -93,7 +112,7 @@ public class RedisCacheMetricsBinderTest {
 
         when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("failing"));
         doReturn(cache).when(cacheManager).getCache("failing");
-        when(redisTemplate.keys("failing*")).thenThrow(new RuntimeException("Redis connection failed"));
+        doThrow(new RuntimeException("Redis connection failed")).when(redisTemplate).scan(any(ScanOptions.class));
 
         RedisCacheMetricsBinder binder = new RedisCacheMetricsBinder(cacheManager);
         binder.bindTo(registry);
@@ -115,18 +134,28 @@ public class RedisCacheMetricsBinderTest {
     }
 
     @Test
-    public void testGaugeHasCorrectDescription() {
-        RedisCache<String, String> cache = new RedisCache<>("desc", 300, redisTemplate);
+    public void testGaugeClosesCursorAfterReading() {
+        RedisCache<String, String> cache = new RedisCache<>("closecheck", 300, redisTemplate);
+        Cursor<String> cursor = mockCursor(Arrays.asList("closecheck:key1", "closecheck:key2").iterator());
 
-        when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("desc"));
-        doReturn(cache).when(cacheManager).getCache("desc");
-        when(redisTemplate.keys("desc*")).thenReturn(Collections.emptySet());
+        when(cacheManager.getCacheNames()).thenReturn(Collections.singletonList("closecheck"));
+        doReturn(cache).when(cacheManager).getCache("closecheck");
+        doReturn(cursor).when(redisTemplate).scan(any(ScanOptions.class));
 
         RedisCacheMetricsBinder binder = new RedisCacheMetricsBinder(cacheManager);
         binder.bindTo(registry);
 
-        Gauge gauge = registry.find("cache.size").tag("cache", "desc").gauge();
+        Gauge gauge = registry.find("cache.size").tag("cache", "closecheck").gauge();
         assertNotNull(gauge);
-        assertEquals("Number of entries in the Redis cache", gauge.getId().getDescription());
+        assertEquals(2.0, gauge.value(), 0.0);
+        verify(cursor).close();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Cursor<String> mockCursor(Iterator<String> iterator) {
+        Cursor<String> cursor = mock(Cursor.class);
+        when(cursor.hasNext()).thenAnswer(inv -> iterator.hasNext());
+        when(cursor.next()).thenAnswer(inv -> iterator.next());
+        return cursor;
     }
 }
