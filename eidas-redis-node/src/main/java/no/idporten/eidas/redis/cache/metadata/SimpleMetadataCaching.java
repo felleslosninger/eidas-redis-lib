@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.cache.Cache;
-import javax.cache.CacheManager;
 
 /**
  * implements a caching service using hashmap
