@@ -16,6 +16,7 @@ import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorException;
 import javax.cache.processor.EntryProcessorResult;
 import java.util.*;
+import org.springframework.data.redis.core.ScanOptions;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -205,12 +206,17 @@ public class RedisCache<K, V> implements Cache<K, V> {
     @Override
     public void clear() {
         try {
-            // Fetch all keys that match the prefix pattern
-            Set<String> keys = redisTemplate.keys(cachePrefix + "*");
-            if (keys != null && !keys.isEmpty()) {
+            // Use SCAN to iterate keys matching the prefix pattern (non-blocking, O(N) distributed)
+            List<String> keys = new ArrayList<>();
+            redisTemplate.scan(
+                    ScanOptions.scanOptions()
+                            .match(cachePrefix + ":*")
+                            .count(100)
+                            .build()
+            ).forEachRemaining(key -> keys.add((String) key));
+            if (!keys.isEmpty()) {
                 redisTemplate.delete(keys);
             }
-
         } catch (Exception e) {
             log.error("Failed to clear cache", e);
             throw e;

@@ -26,8 +26,8 @@ import no.idporten.eidas.redis.cache.RedisCache;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import io.micrometer.common.lang.NonNull;
@@ -51,7 +51,13 @@ public class RedisCacheMetricsBinder implements MeterBinder {
             if (cache instanceof RedisCache<?,?> redisCache) {
                 Gauge.builder("cache.size", redisCache, c -> {
                             try {
-                                Set<?> keys = c.getRedisTemplate().keys(c.getCachePrefix() + "*");
+                                List<Object> keys = new ArrayList<>();
+                                c.getRedisTemplate().scan(
+                                        org.springframework.data.redis.core.ScanOptions.scanOptions()
+                                                .match(c.getCachePrefix() + ":*")
+                                                .count(100)
+                                                .build()
+                                ).forEachRemaining(keys::add);
                                 return keys.size();
                             } catch (Exception e) {
                                 return -1;
