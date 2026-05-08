@@ -12,10 +12,6 @@
   </parent>
   <dependencies>
     <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-redis</artifactId>
-    </dependency>
-    <dependency>
       <groupId>no.idporten.eidas</groupId>
       <artifactId>eidas-redis</artifactId>
     </dependency>
